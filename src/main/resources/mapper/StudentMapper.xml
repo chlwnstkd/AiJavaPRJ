@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/schema/mybatis-3-mapper.dtd">
+
+<!-- JAVA? ??? Mapper ?? ?? -->
+<mapper namespace="kopo.poly.perslstance.mapper.IStudentMapper">
+    <!-- ?? ?? ?? -->
+    <insert id="insertStudent" parameterType="StudentDTO">
+        INSERT INTO STUDENT
+            (USER_ID, USER_NAME, EMAIL, ADDR)
+        VALUES (#{userId}, #{userName}, #{email}, #{addr})
+    </insert>
+
+    <delete id="deleteStudent" parameterType="StudentDTO">
+        DELETE
+        FROM STUDENT
+        where USER_ID = #{userId}
+    </delete>
+
+    <!-- ?? ?? ?? ?? -->
+    <select id="getStudentList" resultType="studentDTO">
+        SELECT USER_ID, USER_NAME, EMAIL, ADDR
+        FROM STUDENT
+        ORDER BY USER_NAME DESC
+    </select>
+
+    <!-- ??? ????? ???? ?? ?? ???? ???? 1? ???? ?? -->
+    <select id="getStudent" parameterType="StudentDTO" resultType="studentDTO">
+        SELECT USER_ID, USER_NAME, EMAIL, ADDR
+        FROM STUDENT
+        WHERE USER_ID = #{userId}
+    </select>
+</mapper>
+
