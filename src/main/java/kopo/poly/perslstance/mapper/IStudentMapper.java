@@ -19,7 +19,9 @@ public interface IStudentMapper {
      */
     void insertStudent(StudentDTO pDTO) throws Exception;
     void deleteStudent(StudentDTO pDTO) throws Exception;
+    void deleteAll(StudentDTO pDTO) throws Exception;
 
+    void updateStudent(StudentDTO pDTO) throws Exception;
     /**
      * 학생 전체 조회 쿼리
      * <p>

@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -90,24 +91,91 @@ public class AiJavaPrjApplication implements CommandLineRunner {
 //
 //		log.info("자바 프로그래밍 종료!!");
 
-		StudentDTO pDTO;
-		List<StudentDTO> rList;
-
-		pDTO = new StudentDTO();
-
-		pDTO.setUserId("choi");
-		pDTO.setUserName("최준상");
-		pDTO.setEmail("jun1234755@naver.com");
-		pDTO.setAddr("서울");
-
+		StudentDTO pDTO; // 학생 등록, 수정, 삭제에 활용될 DTO
+		List<StudentDTO> rList; // DB 조회 결과를 표현
+//
+//		//학생 등록하기
+//		pDTO = new StudentDTO();
+//
+//		pDTO.setUserId("choi");
+//		pDTO.setUserName("최준상");
+//		pDTO.setEmail("jun1234755@naver.com");
+//		pDTO.setAddr("서울");
+//
+//
+//
 //		rList = studentService.insertStudent(pDTO);
-		rList = studentService.deleteStudent(pDTO);
+//
+//		rList.forEach(dto -> {
+//			log.info("DB에 저장된 아이디 : " + dto.getUserId());
+//			log.info("DB에 저장된 이름 : " + dto.getUserName());
+//			log.info("DB에 저장된 이메일 : " + dto.getEmail());
+//			log.info("DB에 저장된 주소 : " + dto.getAddr());
+//		});
+//
+		//학생 등록하기
+		List<StudentDTO> pList = new ArrayList<>();
+
+		for(int i = 1; i < 5; i++) {
+			pDTO = new StudentDTO();
+			pDTO.setUserId(i + "");
+			pDTO.setUserName("최준상");
+			pDTO.setEmail("jun1234755@naver.com");
+			pDTO.setAddr("서울");
+			pList.add(pDTO);
+		}
+
+		log.info(pList + "");
+		rList = studentService.insertStudentList(pList);
 
 		rList.forEach(dto -> {
-			log.info("DB에 저장된 아이디 : " + pDTO.getUserId());
-			log.info("DB에 저장된 이름 : " + pDTO.getUserName());
-			log.info("DB에 저장된 이메일 : " + pDTO.getEmail());
-			log.info("DB에 저장된 주소 : " + pDTO.getAddr());
+			log.info("DB에 저장된 아이디 : " + dto.getUserId());
+			log.info("DB에 저장된 이름 : " + dto.getUserName());
+			log.info("DB에 저장된 이메일 : " + dto.getEmail());
+			log.info("DB에 저장된 주소 : " + dto.getAddr());
 		});
+
+//		//학생 수정하기
+//		pDTO = new StudentDTO();
+//
+//		pDTO.setUserId("choi"); // PK칼럼인 회원 아이디를 기준으로 데이터를 수정함
+//		pDTO.setUserName("최준상_수정");
+//		pDTO.setEmail("jun1234755@naver.com_수정");
+//		pDTO.setAddr("서울_수정");
+//
+//		rList = studentService.updateStudent(pDTO);
+//
+//		rList.forEach(dto -> {
+//			log.info("DB에 저장된 아이디 : " + dto.getUserId());
+//			log.info("DB에 저장된 이름 : " + dto.getUserName());
+//			log.info("DB에 저장된 이메일 : " + dto.getEmail());
+//			log.info("DB에 저장된 주소 : " + dto.getAddr());
+//		});
+
+//		//학생 삭제하기
+//		pDTO = new StudentDTO();
+//
+//		pDTO.setUserId("2"); // PK 칼럼인 회원 아이디를 기준으로 데이터를 수정함
+//
+//		rList = studentService.deleteStudent(pDTO);
+//
+//		rList.forEach(dto -> {
+//			log.info("DB에 저장된 아이디 : " + dto.getUserId());
+//			log.info("DB에 저장된 이름 : " + dto.getUserName());
+//			log.info("DB에 저장된 이메일 : " + dto.getEmail());
+//			log.info("DB에 저장된 주소 : " + dto.getAddr());
+//		});
+
+		//학생 삭제하기
+//		pDTO = new StudentDTO();
+//
+//		rList = studentService.deleteAll(pDTO);
+//
+//		rList.forEach(dto -> {
+//			log.info("DB에 저장된 아이디 : " + dto.getUserId());
+//			log.info("DB에 저장된 이름 : " + dto.getUserName());
+//			log.info("DB에 저장된 이메일 : " + dto.getEmail());
+//			log.info("DB에 저장된 주소 : " + dto.getAddr());
+//		});
 	}
 }

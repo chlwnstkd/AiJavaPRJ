@@ -2,7 +2,7 @@ package kopo.poly.service;
 
 import kopo.poly.dto.StudentDTO;
 
-import java.util.*;
+import java.util.List;
 
 public interface IStudentService {
     /**
@@ -13,4 +13,7 @@ public interface IStudentService {
      */
     List<StudentDTO> insertStudent(StudentDTO pDTO) throws Exception;
     List<StudentDTO> deleteStudent(StudentDTO pDTO) throws Exception;
+    List<StudentDTO> deleteAll(StudentDTO pDTO) throws Exception;
+    List<StudentDTO> updateStudent(StudentDTO pDTO) throws Exception;
+    List<StudentDTO> insertStudentList(List<StudentDTO> pDTO) throws Exception;
 }

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +24,7 @@ public class StudentService implements IStudentService {
 
         // Student 테이블에 등록된 학생 아이디가 존재하는지 체크하기 위해 DB 조회하기
         Optional<StudentDTO> res = Optional.ofNullable(
-                studentMapper.getStudent(pDTO)
-        );
+                studentMapper.getStudent(pDTO));
 
         if (!res.isPresent()) { //DB 조회 결과로 회원아이디가 존재하지 않는다면..
             studentMapper.insertStudent(pDTO);
@@ -39,24 +39,90 @@ public class StudentService implements IStudentService {
         return rList;
     }
     @Override
+    public List<StudentDTO> insertStudentList(List<StudentDTO> pList) throws Exception {
+        log.info(this.getClass().getName() + ".insertStudentList Start!");
+
+        pList.forEach(dto-> {
+            try {
+                this.insertStudent(dto);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        Iterator<StudentDTO> it = pList.iterator();
+        List<StudentDTO> rList = new ArrayList<>();
+        while (it.hasNext()) {
+            // Student 테이블에 등록된 학생 아이디가 존재하는지 체크하기 위해 DB 조회하기
+            Optional<StudentDTO> res = Optional.ofNullable(
+                    studentMapper.getStudent(it.next()));
+
+            if (!res.isPresent()) { //DB 조회 결과로 회원아이디가 존재하지 않는다면..
+                studentMapper.insertStudent(it.next());
+            }else {
+                log.info("조회가 됩니다");
+            }
+            rList =Optional.ofNullable( studentMapper.getStudentList()).orElseGet(ArrayList::new);
+        }
+        //학생 테이블 전체 조회하기
+
+        log.info(this.getClass().getName() + ".insertStudent End!");
+        return rList;
+    }
+
+    @Override
     public List<StudentDTO> deleteStudent(StudentDTO pDTO) throws Exception {
         log.info(this.getClass().getName() + ".deleteStudent Start!");
 
         // Student 테이블에 등록된 학생 아이디가 존재하는지 체크하기 위해 DB 조회하기
         Optional<StudentDTO> res = Optional.ofNullable(
-                studentMapper.getStudent(pDTO)
-        );
+                studentMapper.getStudent(pDTO));
 
-        if (res.isPresent()) { //DB 조회 결과로 회원아이디가 존재하지 않는다면..
+        if (res.isPresent()) { //DB 조회 결과로 회원아이디가 존재한다면..
             studentMapper.deleteStudent(pDTO);
+            log.info(pDTO.getUserId() + "님이 삭제되었습니다.");
+        } else {
+            log.info("회원이 존재하지 않아 삭제되지 못했습니다.");
         }
 
         //학생 테이블 전체 조회하기
-        List<StudentDTO> rList =Optional.ofNullable(
-                studentMapper.getStudentList()
-        ).orElseGet(ArrayList::new);
-
+        List<StudentDTO> rList =Optional.ofNullable(studentMapper.getStudentList()).orElseGet(ArrayList::new);
         log.info(this.getClass().getName() + ".deleteStudent End!");
         return rList;
     }
+
+    @Override
+    public List<StudentDTO> deleteAll(StudentDTO pDTO) throws Exception {
+        log.info(this.getClass().getName() + ".deleteAll Start!");
+
+            studentMapper.deleteAll(pDTO);
+            log.info("전부 삭제되었습니다.");
+
+
+        //학생 테이블 전체 조회하기
+        List<StudentDTO> rList =Optional.ofNullable(studentMapper.getStudentList()).orElseGet(ArrayList::new);
+        log.info(this.getClass().getName() + ".deleteAll End!");
+        return rList;
+    }
+    @Override
+    public List<StudentDTO> updateStudent(StudentDTO pDTO) throws Exception {
+        log.info(this.getClass().getName() + ".updateStudent Start!");
+
+        // Student 테이블에 등록된 학생 아이디가 존재하는지 체크하기 위해 DB 조회하기
+        Optional<StudentDTO> res = Optional.ofNullable(
+                studentMapper.getStudent(pDTO));
+
+        if (res.isPresent()) {//DB 조회 결과로 회원아이디가 존재한다면..
+            studentMapper.updateStudent(pDTO);
+            log.info(pDTO.getUserId() + "님이 수정되었습니다.");
+        } else {
+            log.info("회원이 존재하지 않아 수정되지 못했습니다.");
+        }
+
+        //학생 테이블 전체 조회하기
+        List<StudentDTO> rList = Optional.ofNullable(studentMapper.getStudentList()).orElseGet(ArrayList::new);
+        log.info(this.getClass().getName() + ".updateStudent End!");
+        return rList;
+    }
+
 }
